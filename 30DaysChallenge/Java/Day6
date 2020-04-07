@@ -1,31 +1,24 @@
 class Solution {
-    int[] primes = {2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101};
-    public List<List<String>> groupAnagrams(String[] strs) {
-        List<List<String>> ans = new ArrayList<List<String>>();
-        if (strs.length == 0) {
-            return ans;
+    public List<List<String>> groupAnagrams(String[] array) {
+         if (array == null || array.length == 0) {
+            return new ArrayList();
         }
-        HashMap<Long, List<String>> hashyap = new HashMap<Long, List<String>>();
-        int counter = 0;
-        for (String s: strs) {
-            long hash = hash(s);
-            List<String> list = hashyap.get(hash);
-            if (list == null) {
-                list = new ArrayList<String>();
-                hashyap.put(hash, list);
-                ans.add(list);
-            }
-            list.add(s);
+
+        Map<String, List<String>> map = new HashMap();
+
+        for (String str : array) {
+            String key = sortChars(str);
+            map.putIfAbsent(key, new ArrayList<String>());
+            List<String> anagrams = map.get(key);
+            anagrams.add(str);
         }
-        return ans;
+
+        return new ArrayList(map.values());
     }
     
-    public long hash(String s) {
-        long ans = 1;
-        for (int i = 0; i < s.length(); i++) {
-            ans *= primes[s.charAt(i)-'a'];
-        }
-        return ans;
+    private String sortChars(String str) {
+        char[] content = str.toCharArray(); // Strings are immutable, so we convert to char[]
+        Arrays.sort(content);
+        return new String(content);
     }
-
 }
